@@ -1,113 +1,144 @@
 <template>
-  <div id="login">
-    <div class="login_title">登录</div>
+  <div id="register">
+    <div class="login_title">注册</div>
     <div class="input_card">
       <el-input
+        minlength="10"
+        maxlength="16"
         class="login_input"
         v-model="account"
-        placeholder="请输入账号"
+        placeholder="账号"
       />
+      <el-input
+        class="login_input"
+        v-model="email"
+        placeholder="邮箱"
+        @input="emailChange"
+        @label="emaillabel"
+      />
+
       <el-input
         class="login_input"
         v-model="password"
         type="password"
-        placeholder="请输入密码"
+        label="sss"
+        placeholder="密码"
+        @focus="testaction"
+        show-password
+      />
+      <el-input
+        class="login_input"
+        v-model="checkpassword"
+        type="password"
+        placeholder="确认密码"
         show-password
       />
       <div class="bottom_card">
-        <el-button type="primary" class="login_btn" @click="loginAction"
-          >登录</el-button
+        <el-button type="primary" class="login_btn" @click="registerAction"
+          >注册</el-button
         >
-        <div class="bottom_tool">
-          <el-button type="text" class="register_btn" @click="registerAction"
-            >还没有账号？注册账号</el-button
-          >
-          <el-button type="text" class="register_btn" @click="forgetAction"
-            >忘记密码?</el-button
-          >
-        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { reactive, ref, toRefs, Toast } from "vue";
-import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
-import { login } from "@/services/demand";
-import { setCookie, setTokenToCookie } from "@/utils/cookie";
-export default {
-  name: "login_login",
+import { ElMessage } from "_element-plus@2.2.16@element-plus";
+import { ref } from "_vue-demi@0.13.11@vue-demi";
+import { register } from "@/services/demand";
 
+export default {
+  name: "login_reigster",
   setup() {
     const router = useRouter();
     var account = ref("");
+    var email = ref("");
+    var emaillabel = ref("");
     var password = ref("");
-    const loginAction = () => {
+    var checkpassword = ref("");
+
+    const registerAction = () => {
       if (account.value.length == 0) {
-        console.log(account.value + "233");
         ElMessage({
           message: "请输入账号",
           type: "warning",
         });
         return;
       }
-
+      if (email.value.length == 0) {
+        ElMessage({
+          message: "请输入邮箱",
+          type: "warning",
+        });
+        return;
+      }
       if (password.value.length == 0) {
         ElMessage({
-          message: "请输入账号",
+          message: "请输入密码",
+          type: "warning",
+        });
+        return;
+      }
+      if (checkpassword.value.length == 0) {
+        ElMessage({
+          message: "请再次输入密码",
           type: "warning",
         });
         return;
       }
 
-      let param = {
-        account: account.value,
-        password: password.value,
+      if (password.value != checkpassword.value) {
+        ElMessage({
+          message: "两次密码输入不一致",
+          type: "warning",
+        });
+        return;
+      }
+
+      var param = {
+        account: account,
+        password: password,
+        email: email,
       };
-      login(param).then((res) => {
+      register(param).then((res) => {
         if (res.code == 200) {
           ElMessage({
-            message: "登录成功",
+            message: "注册成功",
             type: "success",
           });
-          setTokenToCookie(res.data);
         } else {
           ElMessage({
-            message: "登录失败",
+            message: "注册失败",
             type: "error",
           });
         }
       });
     };
 
-    const registerAction = () => {
-      router.push({
-        name: "login_reigster",
-      });
+    const testaction = () => {
+      console.log("233");
     };
 
-    const forgetAction = () => {
-      console.log("忘记密码");
-      router.push({
-        name: "login_reigster",
-      });
+    const emailChange = (value) => {
+      console.log(value);
     };
-
     return {
       account,
+      email,
       password,
-      loginAction,
+      checkpassword,
+      emaillabel,
       registerAction,
-      forgetAction,
+      testaction,
+      emailChange,
     };
   },
 };
 </script>
 
 <style>
-#login {
+#register {
   display: flex;
   align-items: center;
   flex-direction: column;
