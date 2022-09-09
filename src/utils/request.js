@@ -6,7 +6,6 @@ import cookie from "../utils/cookie"
 const getCookie = cookie;
 
 axios.defaults.timeout = 10 * 1000;
-
 axios.defaults.baseURL = "/api"
 
 const fetch = (options) => {
@@ -15,12 +14,11 @@ const fetch = (options) => {
     let url = options.url;
     let data = options.data;
     let headers = options.headers;
-    // let token = "Bearer " + getCookie("access_token");
-    // options.headers = {
-    //     Authorization: token,
-    //     ...headers,
-        
-    // }
+    let token = getCookie("Authorization");
+    options.headers = {
+        Authorization: token,
+        ...headers,
+    }
 
     switch (method) {
         case "get":

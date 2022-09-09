@@ -19,7 +19,16 @@ const routes = [
       title: "注册",
     },
   },
-
+  {
+    path: "/project/home",
+    name: "project_home",
+    component: () => import("@/views/project/projectHome.vue"),
+    meta: {
+      keepAlive: true,
+      title: "首页",
+    },
+  },
+  
   
 ]
 
