@@ -3,7 +3,7 @@ module.exports = defineConfig({
   transpileDependencies: true,
   lintOnSave: false,
   devServer: {
-    port: 9000, // 端口号
+    port: 8080, // 端口号
     host: "127.0.0.1",
     https: false, // https:{type:Boolean}
     open: false, //配置自动启动浏览器

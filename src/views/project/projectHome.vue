@@ -2,34 +2,87 @@
   <div id="projecthome">
     <div class="project_t">
       <el-input
-        v-model="input2"
+        v-model="keyword"
         class="project_s"
         placeholder="请输入搜索内容"
         :prefix-icon="Search"
       />
-      <el-button type="primary" class="project_add" @click="addProject"
+      <el-button
+        type="primary"
+        class="project_add"
+        @click="addProjectShow = true"
         >添加项目</el-button
       >
     </div>
 
-    <div class="action_tool">
+    <el-dialog v-model="addProjectShow" class="project_add_dia">
+      <el-form :model="form">
+        <el-form-item label="名称" :label-width="formLabelWidth">
+          <el-input
+            autocomplete="off"
+            placeholder="项目名称"
+            class="project_add_in"
+            v-model="form.name"
+          />
+        </el-form-item>
+      </el-form>
+      <el-form>
+        <el-form-item label="Base Url" :label-width="formLabelWidth">
+          <el-input
+            autocomplete="off"
+            placeholder="基础URL"
+            class="project_add_in"
+            v-model="form.baseurl"
+          />
+        </el-form-item>
+      </el-form>
+      <el-form>
+        <el-form-item label="描述" :label-width="formLabelWidth">
+          <el-input
+            autocomplete="off"
+            type="textarea"
+            placeholder="项目描述"
+            v-model="form.desc"
+          />
+        </el-form-item>
+      </el-form>
 
-    </div>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="addProjectShow = false">取消</el-button>
+          <el-button type="primary" @click="addProjectShow = false"
+            >添加</el-button
+          >
+        </span>
+      </template></el-dialog
+    >
+
+    <div class="action_tool"></div>
   </div>
 </template>
 
 <script>
-import { reactive } from "_vue@3.2.39@vue";
-import { Calendar, Search } from "@element-plus/icons-vue";
+import { reactive, ref } from "_vue@3.2.39@vue";
 export default {
   name: "project_home",
   setup() {
     var datas = reactive([1, 2, 3, 4, 5, 6]);
-
+    var keyword = ref("");
+    var addProjectShow = ref(false);
+    var formLabelWidth = ref(100);
+    const form = reactive({
+      name: "",
+      baseurl: "",
+      desc: "",
+    });
     const addProject = () => {};
     return {
       datas,
-      addProject
+      keyword,
+      addProjectShow,
+      form,
+      formLabelWidth,
+      addProject,
     };
   },
 };
@@ -62,7 +115,15 @@ export default {
   margin-left: 20px;
   height: 40px;
 }
-.project_s{
+.project_s {
+  height: 40px;
+}
+.project_add_dia {
+  width: 50%;
+  border-radius: 10px;
+  padding-right: 20px;
+}
+.project_add_in {
   height: 40px;
 }
 </style>

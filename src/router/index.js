@@ -28,8 +28,8 @@ const routes = [
       title: "首页",
     },
   },
-  
-  
+
+
 ]
 
 const router = createRouter({
@@ -38,3 +38,7 @@ const router = createRouter({
 })
 
 export default router
+
+router.beforeEach(() => {
+  console.log("跳转")
+})
