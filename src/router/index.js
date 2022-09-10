@@ -1,8 +1,16 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import getCookie from '@/utils/cookie';
+import { createRouter, createWebHashHistory } from "vue-router";
+
+export const routerPath = {
+  login: "/login",
+  register: "/register",
+  projecthome: "/project/home",
+
+};
 
 const routes = [
   {
-    path: "/",
+    path: routerPath.login,
     name: "login",
     component: () => import("@/views/login/login.vue"),
     meta: {
@@ -11,7 +19,7 @@ const routes = [
     },
   },
   {
-    path: "/register",
+    path: routerPath.register,
     name: "login_reigster",
     component: () => import("@/views/login/register.vue"),
     meta: {
@@ -20,7 +28,7 @@ const routes = [
     },
   },
   {
-    path: "/project/home",
+    path: routerPath.projecthome,
     name: "project_home",
     component: () => import("@/views/project/projectHome.vue"),
     meta: {
@@ -28,17 +36,30 @@ const routes = [
       title: "首页",
     },
   },
-
-
 ]
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
-})
+  routes,
+});
 
 export default router
 
-router.beforeEach(() => {
-  console.log("跳转")
-})
+router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title;
+  }
+  if (to.path === routerPath.login || to.path === routerPath.register) {
+    next();
+  } else {
+
+    let token = getCookie("Authorization");
+    if (token == null || token.length == 0) {
+      console.log("未登录");
+      next(routerPath.login);
+    } else {
+      console.log("跳转了");
+      next();
+    }
+  }
+});

@@ -21,6 +21,30 @@ export function register(param) {
         data: param
     });
 }
+//退出登录
+export function logout(param) {
+    return request({
+        method: "post",
+        url: api.logout,
+        data: param
+    });
+}
+//添加项目
+export function addPreject(param) {
+    return request({
+        method: "post",
+        url: api.addProject,
+        data: param
+    });
+}
+//获取项目列表
+export function getProjects(param) {
+    return request({
+        method: "post",
+        url: api.getprojects,
+        data: param
+    });
+}
 
 
 

@@ -50,9 +50,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="addProjectShow = false">取消</el-button>
-          <el-button type="primary" @click="addProjectShow = false"
-            >添加</el-button
-          >
+          <el-button type="primary" @click="addProject = false">添加</el-button>
         </span>
       </template></el-dialog
     >
@@ -62,7 +60,9 @@
 </template>
 
 <script>
+import { addPreject } from "@/services/demand";
 import { reactive, ref } from "_vue@3.2.39@vue";
+import { ElMessage } from "_element-plus@2.2.16@element-plus";
 export default {
   name: "project_home",
   setup() {
@@ -75,7 +75,27 @@ export default {
       baseurl: "",
       desc: "",
     });
-    const addProject = () => {};
+    const addProject = () => {
+      let param = {
+        name: form.name,
+        basePath: form.baseurl,
+        summary: form.desc,
+      };
+      addPreject(param).then((res) => {
+        if (res.code == 200) {
+          console.log("添加成功");
+          ElMessage({
+            message: "添加成功",
+            type: "success",
+          });
+        } else {
+          ElMessage({
+            message: "添加失败",
+            type: "error",
+          });
+        }
+      });
+    };
     return {
       datas,
       keyword,
