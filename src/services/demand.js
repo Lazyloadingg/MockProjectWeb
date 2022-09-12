@@ -40,7 +40,7 @@ export function addPreject(param) {
 //获取项目列表
 export function getProjects(param) {
     return request({
-        method: "post",
+        method: "get",
         url: api.getprojects,
         data: param
     });

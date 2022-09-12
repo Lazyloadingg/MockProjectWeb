@@ -31,7 +31,7 @@
   </div>
 </template>
 
-<script>
+<script >
 import { reactive, ref, toRefs, Toast } from "vue";
 import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
@@ -73,7 +73,9 @@ export default {
             type: "success",
           });
           setTokenToCookie(res.data);
-          
+          router.replace({
+            name: "project_home",
+          });
         } else {
           ElMessage({
             message: "登录失败",

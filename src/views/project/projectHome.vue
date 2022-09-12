@@ -15,6 +15,13 @@
       >
     </div>
 
+    <div class="project_list" v-for="(item, index) in datas" :key="index">
+      <div class="project_item" @click="projectDetail">
+        <div>图标</div>
+        <div class="project_title">{{ item.name }}</div>
+      </div>
+    </div>
+
     <el-dialog v-model="addProjectShow" class="project_add_dia">
       <el-form :model="form">
         <el-form-item label="名称" :label-width="formLabelWidth">
@@ -50,7 +57,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="addProjectShow = false">取消</el-button>
-          <el-button type="primary" @click="addProject = false">添加</el-button>
+          <el-button type="primary" @click="addProject">添加</el-button>
         </span>
       </template></el-dialog
     >
@@ -60,13 +67,14 @@
 </template>
 
 <script>
-import { addPreject } from "@/services/demand";
-import { reactive, ref } from "_vue@3.2.39@vue";
+import { addPreject, getProjects } from "@/services/demand";
+import { onMounted, reactive, ref } from "_vue@3.2.39@vue";
 import { ElMessage } from "_element-plus@2.2.16@element-plus";
+
 export default {
   name: "project_home",
   setup() {
-    var datas = reactive([1, 2, 3, 4, 5, 6]);
+    var datas = ref([]);
     var keyword = ref("");
     var addProjectShow = ref(false);
     var formLabelWidth = ref(100);
@@ -75,6 +83,11 @@ export default {
       baseurl: "",
       desc: "",
     });
+
+    onMounted(() => {
+      getProjectsRequest();
+    });
+
     const addProject = () => {
       let param = {
         name: form.name,
@@ -88,6 +101,7 @@ export default {
             message: "添加成功",
             type: "success",
           });
+          getProjectsRequest();
         } else {
           ElMessage({
             message: "添加失败",
@@ -96,6 +110,20 @@ export default {
         }
       });
     };
+
+    const getProjectsRequest = () => {
+      getProjects().then((res) => {
+        if (res.code == 200) {
+          // datas.push(...res.data);
+          datas.value = res.data;
+        } else {
+          console.log("获取项目失败");
+        }
+        console.log(res);
+      });
+    };
+
+    const projectDetail = () => {};
     return {
       datas,
       keyword,
@@ -145,5 +173,19 @@ export default {
 }
 .project_add_in {
   height: 40px;
+}
+.project_item {
+  padding: 8px 15px;
+  height: 40px;
+  background-color: antiquewhite;
+  margin: 5px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.project_title {
+  margin: 0px 5px;
+  font-weight: 500;
+  font-size: 15px;
 }
 </style>
