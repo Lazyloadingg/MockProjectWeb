@@ -66,10 +66,11 @@
   </div>
 </template>
 
-<script>
+<script >
 import { addPreject, getProjects } from "@/services/demand";
 import { onMounted, reactive, ref } from "_vue@3.2.39@vue";
 import { ElMessage } from "_element-plus@2.2.16@element-plus";
+import router, { routerPath } from "@/router";
 
 export default {
   name: "project_home",
@@ -101,6 +102,7 @@ export default {
             message: "添加成功",
             type: "success",
           });
+          addProjectShow.value = false;
           getProjectsRequest();
         } else {
           ElMessage({
@@ -123,7 +125,11 @@ export default {
       });
     };
 
-    const projectDetail = () => {};
+    const projectDetail = () => {
+      router.push({
+        path: routerPath.projectdetail,
+      });
+    };
     return {
       datas,
       keyword,
@@ -131,6 +137,7 @@ export default {
       form,
       formLabelWidth,
       addProject,
+      projectDetail,
     };
   },
 };

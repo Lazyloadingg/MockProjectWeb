@@ -1,83 +1,51 @@
 
 import axios from "axios";
-import { Vue } from "_vue-demi@0.13.11@vue-demi";
 import cookie from "../utils/cookie"
-import { useRouter } from "vue-router";
-import { routerPath } from "@/router";
+import router, { routerPath } from "../router/index.js"
+
 const getCookie = cookie;
-const router = useRouter();
-axios.defaults.timeout = 10 * 1000;
-axios.defaults.baseURL = "/api"
+const http = axios.create({
+    baseURL: "/api",
+    timeout: 6000
+})
 
-
-axios.interceptors.request.use(config => {
+//请求拦截
+http.interceptors.request.use(config => {
     config.headers.Authorization = getCookie("Authorization");
     return config
 }, err => {
     console.log(err);
 })
-
-axios.interceptors.response.use(res => {
+//响应拦截
+http.interceptors.response.use((res) => {
     console.log("233", res.data);
     if (res.data.code == 200) {
         console.log("请求成功");
-        return Promise.resolve(res.data);
+        return res.data;
     } else if (res.data.code == 401) {
-        console.log("请求失败401");
-        
+
         router.replace({
-            name: routerPath.login,
+            path: routerPath.login
         });
         return Promise.reject(new Error("Error Message"))
     } else {
-        console.log("请求失败");
+        console.log("请求失败2");
         return Promise.reject(new Error("Error Message"))
-
     }
-}, err => {
-    console.log("请求失败", err);
+}, (err) => {
+    console.log("请求失败1", err);
+    return Promise.reject(new Error("Error Message"))
 })
 
 
-const fetch = (options) => {
-
-    let method = options.method.toLowerCase();
-    let url = options.url;
-    let data = options.data;
-
-    switch (method) {
-        case "get":
-            return axios.get(
-                url,
-            );
-
-        case "post":
-            return axios.post(url, data);
-
-        default:
-            return axios(options);
-    }
-
+export default function request({ method = "get", url, data = {}, params = {} }) {
+    return http({
+        method,
+        url,
+        data,
+        params,
+    })
 }
 
-export default async function request(options) {
-
-    try {
-        const response = await fetch(options);
-        console.log(response);
-        let data = response.data;
-        return {
-            success: true,
-            message: "请求成功",
-            ...data,
-        };
-    } catch (error) {
-        console.log(error);
-        return {
-            success: false,
-            message: "请求失败",
-        };
-    }
-}
 
 

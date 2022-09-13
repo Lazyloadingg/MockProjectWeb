@@ -5,7 +5,7 @@ export const routerPath = {
   login: "/login",
   register: "/register",
   projecthome: "/project/home",
-
+  projectdetail: "/project/detail",
 };
 
 const routes = [
@@ -36,6 +36,15 @@ const routes = [
       title: "首页",
     },
   },
+  {
+    path: routerPath.projectdetail,
+    name: "project_detail",
+    component: () => import("@/views/project/projectDetail.vue"),
+    meta: {
+      keepAlive: true,
+      title: "项目详情",
+    },
+  }
 ]
 
 const router = createRouter({

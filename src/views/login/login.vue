@@ -67,6 +67,7 @@ export default {
         password: password.value,
       };
       login(param).then((res) => {
+        console.log("登录结束",res);
         if (res.code == 200) {
           ElMessage({
             message: "登录成功",
