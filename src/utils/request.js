@@ -37,7 +37,6 @@ http.interceptors.response.use((res) => {
     return Promise.reject(new Error("Error Message"))
 })
 
-
 export default function request({ method = "get", url, data = {}, params = {} }) {
     return http({
         method,

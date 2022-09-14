@@ -1,5 +1,7 @@
 <template>
-  <div>{{ msg }}</div>
+  <div v-for="(item, index) in datas" :key="index">
+    <div>{{ item.name }}</div>
+  </div>
 </template>
 
 
@@ -9,7 +11,31 @@ export default {
 };
 </script>
 <script setup>
-import { ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
+import { getAPIs } from "@/services/demand";
+import { useRoute }  from "vue-router"; 
+// import router, { routerPath } from "@/router";
 
-let msg = ref("Hello!");
+var datas = ref([]);
+var pid = ref("");
+const router = useRoute();
+
+onMounted(() => {
+  pid.value = router.query?.pid;
+  console.log("pid", router.query?.pid);
+  getApiList();
+});
+
+const getApiList = () => {
+  let param = {
+    pid: pid.value,
+  };
+  console.log("-----",param)
+  getAPIs(param).then((res) => {
+    if (res.code == 200) {
+      datas.value = res.data;
+    } else {
+    }
+  });
+};
 </script>

@@ -16,12 +16,24 @@
     </div>
 
     <div class="project_list" v-for="(item, index) in datas" :key="index">
-      <div class="project_item" @click="projectDetail">
-        <div>图标</div>
-        <div class="project_title">{{ item.name }}</div>
+      <div class="project_item" @click="projectDetail(item)">
+        <div>
+          <div>图标</div>
+          <div class="project_title">{{ item.name }}</div>
+        </div>
+        <div>
+          <el-button type="primary" class="project_edit">编辑</el-button>
+          <el-button
+            type="primary"
+            class="project_del"
+            @click.stop="delProject(item, index)"
+            >删除</el-button
+          >
+        </div>
       </div>
     </div>
 
+    <!-- 添加项目 -->
     <el-dialog v-model="addProjectShow" class="project_add_dia">
       <el-form :model="form">
         <el-form-item label="名称" :label-width="formLabelWidth">
@@ -67,7 +79,7 @@
 </template>
 
 <script >
-import { addPreject, getProjects } from "@/services/demand";
+import { addPreject, delPreject, getProjects } from "@/services/demand";
 import { onMounted, reactive, ref } from "_vue@3.2.39@vue";
 import { ElMessage } from "_element-plus@2.2.16@element-plus";
 import router, { routerPath } from "@/router";
@@ -112,6 +124,25 @@ export default {
         }
       });
     };
+    const delProject = (item, index) => {
+      let param = {
+        id: item.id,
+      };
+      delPreject(param).then((res) => {
+        if (res.code == 200) {
+          ElMessage({
+            message: "删除成功",
+            type: "success",
+          });
+          datas.value.splice(index, 1);
+        } else {
+          ElMessage({
+            message: "删除失败",
+            type: "error",
+          });
+        }
+      });
+    };
 
     const getProjectsRequest = () => {
       getProjects().then((res) => {
@@ -125,9 +156,10 @@ export default {
       });
     };
 
-    const projectDetail = () => {
+    const projectDetail = (item) => {
       router.push({
         path: routerPath.projectdetail,
+        query: { pid: item.id },
       });
     };
     return {
@@ -138,6 +170,7 @@ export default {
       formLabelWidth,
       addProject,
       projectDetail,
+      delProject,
     };
   },
 };
@@ -165,6 +198,7 @@ export default {
 }
 .project_t {
   display: flex;
+  margin-bottom: 15px;
 }
 .project_add {
   margin-left: 20px;
@@ -184,15 +218,26 @@ export default {
 .project_item {
   padding: 8px 15px;
   height: 40px;
-  background-color: antiquewhite;
-  margin: 5px 0px;
+  background-color: #f0f2fc;
+  margin: 10px 0px;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
+  border-radius: 10px;
 }
 .project_title {
   margin: 0px 5px;
   font-weight: 500;
   font-size: 15px;
+}
+.project_del {
+  background-color: red;
+  border-width: 0px;
+  font-size: 12px;
+}
+.project_edit {
+  background-color: #44d1b6;
+  border-width: 0px;
+  font-size: 12px;
 }
 </style>

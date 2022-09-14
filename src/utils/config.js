@@ -10,7 +10,7 @@ export const api = {
     addApi: `${BASEURL}/space/addapi`,
     getprojects: `${BASEURL}/space/getprojects`,
     getapis: `${BASEURL}/space/getapis`,
-    getapis: `${BASEURL}/space/getapidetail`,
+    getapidetail: `${BASEURL}/space/getapidetail`,
     deleteproject: `${BASEURL}/space/deleteproject`,
     deleteapi: `${BASEURL}/space/deleteapi`,
     updateapi: `${BASEURL}/space/updateapi`,

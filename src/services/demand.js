@@ -37,12 +37,28 @@ export function addPreject(param) {
         data: param
     });
 }
+//删除项目
+export function delPreject(param) {
+    return request({
+        method: "post",
+        url: api.deleteproject,
+        data: param
+    });
+}
 //获取项目列表
 export function getProjects(param) {
     return request({
         method: "get",
         url: api.getprojects,
-        data: param
+        params: param
+    });
+}
+//获取项目下 API列表
+export function getAPIs(param) {
+    return request({
+        method: "get",
+        url: api.getapis,
+        params: param
     });
 }
 
