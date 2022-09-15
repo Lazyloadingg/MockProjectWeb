@@ -6,6 +6,8 @@ export const routerPath = {
   register: "/register",
   projecthome: "/project/home",
   projectdetail: "/project/detail",
+  projectApiDetail: "/project/api",
+
 };
 
 const routes = [
@@ -44,7 +46,17 @@ const routes = [
       keepAlive: true,
       title: "项目详情",
     },
+  },
+  {
+    path: routerPath.projectApiDetail,
+    name: "project_api",
+    component: () => import("@/views/project/apiDetail.vue"),
+    meta: {
+      keepAlive: true,
+      title: "api详情",
+    },
   }
+
 ]
 
 const router = createRouter({

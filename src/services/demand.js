@@ -61,6 +61,14 @@ export function getAPIs(param) {
         params: param
     });
 }
+//获取api详情
+export function getApiDetail(param) {
+    return request({
+        method: "get",
+        url: api.getapidetail,
+        params: param
+    });
+}
 
 
 
