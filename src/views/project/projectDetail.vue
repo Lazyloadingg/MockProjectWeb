@@ -45,7 +45,7 @@
         <el-input
           autocomplete="off"
           type="textarea"
-          placeholder="项目描述"
+          placeholder="API描述"
           v-model="form.desc"
         />
       </el-form-item>
